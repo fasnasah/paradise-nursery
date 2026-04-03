@@ -1,24 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 function AboutUs() {
   const navigate = useNavigate();
 
   return (
-    <div style={{
-      backgroundImage: "url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6')",
-      height: "100vh",
-      backgroundSize: "cover",
-      display:"flex",
-      flexDirection:"column",
-      justifyContent:"center",
-      alignItems:"center",
-      color:"white"
-    }}>
-      <h1>Paradise Nursery</h1>
-      <p>Beautiful houseplants for your home</p>
-      <button onClick={()=>navigate("/plants")}>
-        Get Started
-      </button>
+    <div className="background-image">
+      <div className="about-us-container">
+        <h1>Welcome to Paradise Nursery</h1>
+        <p>
+          Paradise Nursery is your trusted destination for beautiful indoor plants.
+          We provide a variety of houseplants that bring freshness and positivity
+          into your home.
+        </p>
+        <p>
+          Our mission is to make plant shopping simple and enjoyable while helping
+          customers create greener living spaces.
+        </p>
+
+        <button onClick={() => navigate("/plants")}>
+          Get Started
+        </button>
+      </div>
     </div>
   );
 }
