@@ -1,52 +1,67 @@
 import Header from "../components/Header";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/CartSlice";
+import { addItem } from "../redux/CartSlice";
+import { useState } from "react";
 
 function ProductList() {
   const dispatch = useDispatch();
+  const [addedToCart, setAddedToCart] = useState({});
 
-  const plants = [
-    { id: 1, name: "Snake Plant", price: 10, category: "Indoor" },
-    { id: 2, name: "Peace Lily", price: 15, category: "Indoor" },
-    { id: 3, name: "Spider Plant", price: 12, category: "Indoor" },
+  const plants = {
+    Indoor: [
+      { name: "Snake Plant", price: 10, image:"https://via.placeholder.com/100"},
+      { name: "Peace Lily", price: 12, image:"https://via.placeholder.com/100"},
+      { name: "Spider Plant", price: 8, image:"https://via.placeholder.com/100"},
+      { name: "Rubber Plant", price: 15, image:"https://via.placeholder.com/100"},
+      { name: "ZZ Plant", price: 20, image:"https://via.placeholder.com/100"},
+      { name: "Money Plant", price: 9, image:"https://via.placeholder.com/100"}
+    ],
+    Succulents: [
+      { name: "Aloe Vera", price: 7, image:"https://via.placeholder.com/100"},
+      { name: "Jade", price: 11, image:"https://via.placeholder.com/100"},
+      { name: "Echeveria", price: 6, image:"https://via.placeholder.com/100"},
+      { name: "Cactus", price: 5, image:"https://via.placeholder.com/100"},
+      { name: "Haworthia", price: 9, image:"https://via.placeholder.com/100"},
+      { name: "Sedum", price: 8, image:"https://via.placeholder.com/100"}
+    ],
+    AirPlants: [
+      { name: "Tillandsia", price: 13, image:"https://via.placeholder.com/100"},
+      { name: "Ionantha", price: 14, image:"https://via.placeholder.com/100"},
+      { name: "Caput", price: 12, image:"https://via.placeholder.com/100"},
+      { name: "Bulbosa", price: 11, image:"https://via.placeholder.com/100"},
+      { name: "Xerographica", price: 25, image:"https://via.placeholder.com/100"},
+      { name: "Stricta", price: 10, image:"https://via.placeholder.com/100"}
+    ]
+  };
 
-    { id: 4, name: "Aloe Vera", price: 8, category: "Succulent" },
-    { id: 5, name: "Cactus", price: 9, category: "Succulent" },
-    { id: 6, name: "Jade Plant", price: 11, category: "Succulent" },
-
-    { id: 7, name: "Air Plant", price: 14, category: "Air Plants" },
-    { id: 8, name: "Tillandsia", price: 13, category: "Air Plants" },
-    { id: 9, name: "Ionantha", price: 16, category: "Air Plants" }
-  ];
-
-  const categories = ["Indoor", "Succulent", "Air Plants"];
+  const handleAdd = (plant) => {
+    dispatch(addItem(plant));
+    setAddedToCart({ ...addedToCart, [plant.name]: true });
+  };
 
   return (
     <div>
       <Header />
 
-      <h1 style={{textAlign:"center"}}>Plants</h1>
-
-      {categories.map(category => (
+      {Object.keys(plants).map(category => (
         <div key={category}>
           <h2>{category}</h2>
 
-          {plants
-            .filter(p => p.category === category)
-            .map(plant => (
-              <div key={plant.id}>
-                <p>{plant.name} - ${plant.price}</p>
+          {plants[category].map(plant => (
+            <div key={plant.name}>
+              <img src={plant.image} alt={plant.name} />
+              <h3>{plant.name}</h3>
+              <p>${plant.price}</p>
 
-                <button
-                  onClick={() => dispatch(addToCart(plant))}
-                >
-                  Add to Cart
-                </button>
+              <button
+                onClick={() => handleAdd(plant)}
+                disabled={addedToCart[plant.name]}
+              >
+                Add to Cart
+              </button>
 
-              </div>
-            ))
-          }
-
+            </div>
+          ))}
         </div>
       ))}
     </div>

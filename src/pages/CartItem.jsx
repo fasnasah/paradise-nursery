@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import { useSelector, useDispatch } from "react-redux";
-import { increaseQty, decreaseQty, removeFromCart } from "../redux/CartSlice";
+import { updateQuantity, removeItem } from "../redux/CartSlice";
 import { useNavigate } from "react-router-dom";
 
 function CartItem() {
@@ -13,22 +13,42 @@ function CartItem() {
     0
   );
 
+  const handleIncrement = (item) => {
+    dispatch(
+      updateQuantity({
+        name: item.name,
+        quantity: item.quantity + 1
+      })
+    );
+  };
+
+  const handleDecrement = (item) => {
+    if (item.quantity > 1) {
+      dispatch(
+        updateQuantity({
+          name: item.name,
+          quantity: item.quantity - 1
+        })
+      );
+    }
+  };
+
   return (
     <div>
       <Header />
-
       <h1>Shopping Cart</h1>
 
       {cart.map(item => (
-        <div key={item.id} style={{border:"1px solid gray", margin:"10px", padding:"10px"}}>
+        <div key={item.name}>
+          <img src={item.image} alt={item.name} />
           <h3>{item.name}</h3>
-          <p>Price: ${item.price}</p>
-          <p>Quantity: {item.quantity}</p>
+          <p>Unit Price: ${item.price}</p>
           <p>Total: ${item.price * item.quantity}</p>
 
-          <button onClick={() => dispatch(increaseQty(item.id))}>+</button>
-          <button onClick={() => dispatch(decreaseQty(item.id))}>-</button>
-          <button onClick={() => dispatch(removeFromCart(item.id))}>
+          <button onClick={() => handleIncrement(item)}>+</button>
+          <button onClick={() => handleDecrement(item)}>-</button>
+
+          <button onClick={() => dispatch(removeItem(item.name))}>
             Delete
           </button>
         </div>
